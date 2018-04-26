@@ -20,12 +20,19 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.omri.dev.firgunappclient.RestClient.FirgunRestClientUsage;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 import static com.omri.dev.firgunappclient.R.id.map;
 
@@ -82,12 +89,6 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                                 "\nLocation: " + lastUserLocation.getLatitude() + "," +
                                 lastUserLocation.getLongitude(),
                                 Toast.LENGTH_SHORT).show();
-
-                try {
-                    FirgunRestClientUsage.getAllFirguns();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -122,6 +123,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             enableLocationFunctions();
         }
 
+        loadFirguns();
+
 //        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
 //            @Override
 //            public void onMapLongClick(LatLng latLng) {
@@ -142,6 +145,45 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private void enableLocationFunctions() {
         mMap.setMyLocationEnabled(true);
         zoomToCurrentLocation();
+    }
+
+    private void loadFirguns() {
+        try {
+            FirgunRestClientUsage.getAllFirguns(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                    try {
+                        JSONArray result = (JSONArray)response.get("_items");
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject currObject = (JSONObject) result.get(i);
+                            double latitude = currObject.getDouble("latitude");
+                            double longitude = currObject.getDouble("longitude");
+
+                            mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(latitude, longitude))
+                            .title("Firgun location")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+                    JSONArray o = timeline;
+//                // Pull out the first event on the public timeline
+//                JSONObject firstEvent = timeline.get(0);
+//                String tweetText = firstEvent.getString("text");
+//
+//                // Do something with the response
+//                System.out.println(tweetText);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings({"MissingPermission"})

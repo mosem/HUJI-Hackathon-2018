@@ -9,7 +9,7 @@ import com.loopj.android.http.RequestParams;
  */
 
 public class FirgunRestClient {
-    private static final String BASE_URL = "https://jsonplaceholder.typicode.com/";
+    private static final String BASE_URL = "http://35.229.18.203:5000/firguns";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

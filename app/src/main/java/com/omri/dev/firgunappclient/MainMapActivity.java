@@ -23,6 +23,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.omri.dev.firgunappclient.RestClient.FirgunRestClientUsage;
+
+import org.json.JSONException;
 
 import static com.omri.dev.firgunappclient.R.id.map;
 
@@ -79,6 +82,12 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                                 "\nLocation: " + lastUserLocation.getLatitude() + "," +
                                 lastUserLocation.getLongitude(),
                                 Toast.LENGTH_SHORT).show();
+
+                try {
+                    FirgunRestClientUsage.getAllFirguns();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

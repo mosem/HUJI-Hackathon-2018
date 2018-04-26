@@ -2,14 +2,12 @@ package com.omri.dev.firgunappclient;
 
 import android.Manifest;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.view.View;
@@ -22,11 +20,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import static com.omri.dev.firgunappclient.R.id.map;
 
 public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -41,7 +39,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_main_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(map);
         mapFragment.getMapAsync(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -71,6 +69,10 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String userFirgunText = input.getText().toString();
+
+//                mMap.addMarker(new MarkerOptions()
+//                        .position(new LatLng(lastUserLocation.getLatitude(), lastUserLocation.getLongitude()))
+//                        .title("Hello world"));
 
                 Toast.makeText(getApplicationContext(),
                                 "New Firgun was sent: " + userFirgunText +

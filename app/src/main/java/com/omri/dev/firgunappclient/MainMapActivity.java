@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -190,6 +191,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                                     catch(JSONException ex) {
                                         ex.printStackTrace();
                                     }
+                                    clearFirguns();
+                                    loadFirguns();
                                 }
                             }
                         });
@@ -203,6 +206,17 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         });
 
         builder.show();
+    }
+
+    public void scheduleRefreshFirguns() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                clearFirguns();
+                loadFirguns();
+                handler.postDelayed(this, 20 * 1000);
+            }
+        }, 20*1000);
     }
 
 
@@ -228,6 +242,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
 
         loadFirguns();
+        scheduleRefreshFirguns();
 
 //        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
 //            @Override
@@ -251,6 +266,15 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         zoomToCurrentLocation();
     }
 
+    private void clearFirguns() {
+        try {
+            mMap.clear();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadFirguns() {
         try {
             FirgunRestClientUsage.getAllFirguns(new JsonHttpResponseHandler() {
@@ -258,7 +282,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response){
                     try {
                         JSONArray result = (JSONArray)response.get("_items");
-                        for (int i = 0; i < response.length(); i++) {
+                        for (int i = 0; i < result.length(); i++) {
                             JSONObject currObject = (JSONObject) result.get(i);
                             String description = currObject.getString("description");
                             double latitude = currObject.getDouble("latitude");

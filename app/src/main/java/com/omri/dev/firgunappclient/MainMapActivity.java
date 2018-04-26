@@ -1,6 +1,7 @@
 package com.omri.dev.firgunappclient;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -9,7 +10,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,6 +33,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 666;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
+    private Location lastUserLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +48,45 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Send new firgun", Toast.LENGTH_SHORT).show();
+                createNewFirgunDialog();
+                //Toast.makeText(getApplicationContext(), "Send new firgun", Toast.LENGTH_SHORT).show();
             }
         });
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+    }
+
+    private void createNewFirgunDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter Firgun description");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Send a Firgun!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String userFirgunText = input.getText().toString();
+
+                Toast.makeText(getApplicationContext(),
+                                "New Firgun was sent: " + userFirgunText +
+                                "\nLocation: " + lastUserLocation.getLatitude() + "," +
+                                lastUserLocation.getLongitude(),
+                                Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
 
@@ -72,21 +111,20 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
             enableLocationFunctions();
         }
 
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(LatLng latLng) {
-                mMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title("Firgun location")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-
-                /* Intent i = new Intent();
-                String locationString = latLng.latitude + "," + latLng.longitude;
-                i.setData(Uri.parse(locationString));
-                setResult(RESULT_OK, i);
-                finish(); */
-            }
-        });
+//        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+//            @Override
+//            public void onMapLongClick(LatLng latLng) {
+//                mMap.addMarker(new MarkerOptions()
+//                        .position(latLng)
+//                        .title("Firgun location")
+//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+//                /* Intent i = new Intent();
+//                String locationString = latLng.latitude + "," + latLng.longitude;
+//                i.setData(Uri.parse(locationString));
+//                setResult(RESULT_OK, i);
+//                finish(); */
+//            }
+//        });
     }
 
     @SuppressWarnings({"MissingPermission"})
@@ -103,6 +141,9 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
+                            // Save the user last location for further user
+                            lastUserLocation = location;
+
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
 
                             CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -114,5 +155,4 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                     }
                 });
     }
-
 }

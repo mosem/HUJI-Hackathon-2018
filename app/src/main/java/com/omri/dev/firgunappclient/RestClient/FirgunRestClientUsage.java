@@ -1,6 +1,7 @@
 package com.omri.dev.firgunappclient.RestClient;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 
@@ -12,5 +13,9 @@ import org.json.JSONException;
 public class FirgunRestClientUsage {
     public static void getAllFirguns(JsonHttpResponseHandler handler) throws JSONException {
         FirgunRestClient.get("", null, handler);
+    }
+
+    public static void postFirgun(RequestParams params, JsonHttpResponseHandler handler) throws JSONException {
+        FirgunRestClient.post("", params, handler);
     }
 }

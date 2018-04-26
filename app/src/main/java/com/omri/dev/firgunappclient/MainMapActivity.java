@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.omri.dev.firgunappclient.RestClient.FirgunRestClientUsage;
 
 import org.json.JSONArray;
@@ -41,7 +42,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 666;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
-    private Location lastUserLocation;
+//    private Location lastUserLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
+    @SuppressWarnings({"MissingPermission"})
     private void createNewFirgunDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter Firgun description");
@@ -78,17 +80,54 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         builder.setPositiveButton("Send a Firgun!", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String userFirgunText = input.getText().toString();
 
-//                mMap.addMarker(new MarkerOptions()
-//                        .position(new LatLng(lastUserLocation.getLatitude(), lastUserLocation.getLongitude()))
-//                        .title("Hello world"));
+                mFusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                // Got last known location. In some rare situations this can be null.
+                                if (location == null) {
+                                    Toast.makeText(getApplicationContext(),
+                                            "Waiting for location",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    String userFirgunText = input.getText().toString();
 
-                Toast.makeText(getApplicationContext(),
-                                "New Firgun was sent: " + userFirgunText +
-                                "\nLocation: " + lastUserLocation.getLatitude() + "," +
-                                lastUserLocation.getLongitude(),
-                                Toast.LENGTH_SHORT).show();
+                                    JSONObject jsonObj = new JSONObject();
+
+                                    try {
+                                        final Location lastLoc = location;
+                                        RequestParams params = new RequestParams();
+                                        params.put("category", "eco");
+                                        params.put("longitude", location.getLongitude());
+                                        params.put("latitude", location.getLatitude());
+                                        params.put("description", userFirgunText);
+                                        //TODO: send json object server
+                                        FirgunRestClientUsage.postFirgun(params, new JsonHttpResponseHandler() {
+                                            @Override
+                                            public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                                                try {
+                                                    Toast.makeText(getApplicationContext(),
+                                                            "New Firgun was sent: " +
+                                                                    "\nLocation: " + lastLoc.getLatitude() + "," +
+                                                                    lastLoc.getLongitude(),
+                                                            Toast.LENGTH_SHORT).show();
+
+                                                }
+                                                catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    catch(JSONException ex) {
+                                        ex.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -156,12 +195,13 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                         JSONArray result = (JSONArray)response.get("_items");
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject currObject = (JSONObject) result.get(i);
+                            String description = currObject.getString("description");
                             double latitude = currObject.getDouble("latitude");
                             double longitude = currObject.getDouble("longitude");
 
                             mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitude, longitude))
-                            .title("Firgun location")
+                            .title(description)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                         }
                     }
@@ -195,7 +235,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             // Save the user last location for further user
-                            lastUserLocation = location;
+//                            lastUserLocation = location;
 
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
 

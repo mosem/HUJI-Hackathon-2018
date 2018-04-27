@@ -12,17 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.omri.dev.firgunappclient.MainMapActivity" />
-    <!--<ImageButton-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/imageButton"-->
-        <!--android:src="@drawable/button_panel"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentTop="true"/>-->
-    <!--<ImageView-->
-        <!--android:id="@+id/imageView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"/>-->
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="match_parent"

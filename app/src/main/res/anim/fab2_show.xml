@@ -18,7 +18,6 @@
         android:duration="1000"
         android:fromYDelta="200%"
         android:interpolator="@android:anim/linear_interpolator"
-        android:toXDelta="0%"
         android:toYDelta="0%"></translate>
 
     <!--Fade In-->

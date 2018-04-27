@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-//import android.support.design.widget.ImageView.ImageButton;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,6 +42,8 @@ import cz.msebera.android.httpclient.Header;
 
 import static com.omri.dev.firgunappclient.R.id.map;
 
+//import android.support.design.widget.ImageView.ImageButton;
+
 public class MainMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 666;
@@ -54,6 +56,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         ECO,
         SIGHT
     }
+
+    private static final float FLOAT_BUTTON_GAP = 1.2f;
 //    private Location lastUserLocation;
 
     @Override
@@ -74,21 +78,38 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.fab1);
                 FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
                 FloatingActionButton fab3 = (FloatingActionButton) findViewById(R.id.fab3);
+                ImageView fab1Text = (ImageView) findViewById(R.id.fab1_text);
+                ImageView fab2Text = (ImageView) findViewById(R.id.fab2_text);
+                ImageView fab3Text = (ImageView) findViewById(R.id.fab3_text);
                 if (buttons_revealed) {
                     Animation hide_fab_1 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab1_hide);
                     Animation hide_fab_2 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab2_hide);
                     Animation hide_fab_3 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab3_hide);
-                    hideFAB(fab1, hide_fab_1,  (int) (fab1.getHeight() * 1.7));
-                    hideFAB(fab2, hide_fab_2,  (int) (fab2.getHeight() * 1.7*2));
-                    hideFAB(fab3, hide_fab_3,  (int) (fab3.getHeight() * 1.7*3));
+                    Animation hide_text = AnimationUtils.loadAnimation(getApplication(), R.anim.text_hide);
+                    hideFAB(fab1, hide_fab_1,  (int) (fab1.getHeight() * FLOAT_BUTTON_GAP));
+                    hideFAB(fab2, hide_fab_2,  (int) (fab2.getHeight() * FLOAT_BUTTON_GAP*2));
+                    hideFAB(fab3, hide_fab_3,  (int) (fab3.getHeight() * FLOAT_BUTTON_GAP*3));
+                    fab1Text.startAnimation(hide_text);
+                    fab1Text.setVisibility(View.GONE);
+                    fab2Text.startAnimation(hide_text);
+                    fab2Text.setVisibility(View.GONE);
+                    fab3Text.startAnimation(hide_text);
+                    fab3Text.setVisibility(View.GONE);
                 }
                 else {
                     Animation fab1_anim = AnimationUtils.loadAnimation(getApplication(), R.anim.fab1_show);
                     Animation fab2_anim = AnimationUtils.loadAnimation(getApplication(), R.anim.fab2_show);
                     Animation fab3_anim = AnimationUtils.loadAnimation(getApplication(), R.anim.fab3_show);
-                    displayFAB(fab1, fab1_anim, (int) (fab1.getHeight() * 1.7));
-                    displayFAB(fab2, fab2_anim, (int) (fab2.getHeight() * 1.7*2));
-                    displayFAB(fab3, fab3_anim, (int) (fab3.getHeight() * 1.7*3));
+                    Animation show_text = AnimationUtils.loadAnimation(getApplication(), R.anim.text_show);
+                    displayFAB(fab1, fab1_anim, (int) (fab1.getHeight() * FLOAT_BUTTON_GAP));
+                    displayFAB(fab2, fab2_anim, (int) (fab2.getHeight() * FLOAT_BUTTON_GAP*2));
+                    displayFAB(fab3, fab3_anim, (int) (fab3.getHeight() * FLOAT_BUTTON_GAP*3));
+                    fab1Text.startAnimation(show_text);
+                    fab1Text.setVisibility(View.VISIBLE);
+                    fab2Text.startAnimation(show_text);
+                    fab2Text.setVisibility(View.VISIBLE);
+                    fab3Text.startAnimation(show_text);
+                    fab3Text.setVisibility(View.VISIBLE);
                 }
                 buttons_revealed = !buttons_revealed;
             }
@@ -332,7 +353,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                                 .title(description)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.purple_firgun)));
                             }
-                            
+
                         }
                     }
                     catch (Exception e) {

@@ -4,6 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/black">
 
+    <ImageButton
+        android:id="@+id/panel"
+        android:layout_width="2000px"
+        android:layout_height="160px"
+        android:padding="0px"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:src="@drawable/closed_panel"/>
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -11,6 +20,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/panel"
         tools:context="com.omri.dev.firgunappclient.MainMapActivity" />
 
     <android.support.design.widget.FloatingActionButton

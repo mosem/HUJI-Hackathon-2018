@@ -11,11 +11,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -50,6 +52,9 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private boolean buttons_revealed = false;
+    private boolean open_panel = false;
+
+    ImageButton panel;
 
     public enum FirgunCategory {
         PEOPLE,
@@ -113,6 +118,8 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 }
                 buttons_revealed = !buttons_revealed;
             }
+
+
         });
 
         FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.fab1);
@@ -151,7 +158,30 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
 
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        panel = (ImageButton)findViewById(R.id.panel);
+        panel.setOnClickListener(imgButtonHandler);
     }
+
+    View.OnClickListener imgButtonHandler = new View.OnClickListener() {
+
+        public void onClick(View v) {
+            android.view.ViewGroup.LayoutParams params = panel.getLayoutParams();
+            if (open_panel) {
+                panel.setImageResource(R.drawable.closed_panel);
+
+                params.height = 160;
+
+            } else {
+                params.height = 500;
+                panel.setImageResource(R.drawable.opened_panel);
+            }
+            open_panel = !open_panel;
+            panel.setLayoutParams(params);
+            Log.e("IMAGE_BUTTON", Boolean.toString(open_panel));
+
+        }
+    };
 
     private void displayFAB(FloatingActionButton fab, Animation fab_anim, int botMarginH) {
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) fab.getLayoutParams();

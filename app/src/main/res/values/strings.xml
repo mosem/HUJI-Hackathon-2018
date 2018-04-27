@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">FirgunAppClient</string>
-    <string name="title_activity_main_map">FirgunApp</string>
-    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_main_map">TitleActivity</string>
+    <string name="title_activity_splash">FirgunApp</string>
 </resources>

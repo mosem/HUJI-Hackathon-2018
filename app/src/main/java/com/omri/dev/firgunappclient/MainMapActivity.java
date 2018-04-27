@@ -6,7 +6,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-//import android.support.design.widget.ImageView.ImageButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -117,20 +118,22 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 createNewFirgunDialog(FirgunCategory.ECO);
             }
         });
-//
-//        ImageButton btn=(ImageButton)findViewById(R.id.widget45);
-//        btn.setOnClickListener(new OnClickListener() {
-//
+
+//        ImageButton imgButton =(ImageButton)findViewById(R.id.imageButton);
+//        imgButton.setOnClickListener(new View.OnClickListener() {
 //            public void onClick(View v) {
-//                Intent inf=new Intent(TestbuttontestActivity.this,Activityfullscreen.class);
-//
-//                startActivity(inf);
+//                showPanel();
 //            }
 //        });
 
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
+
+//    private void showPanel(){
+//        ImageView mimageView=(ImageView) findViewById(R.id.imageView);
+//        mimageView.setImageResource(R.drawable.close_panel);
+//    }
 
     private void displayFAB(FloatingActionButton fab, Animation fab_anim, int botMarginH) {
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) fab.getLayoutParams();
@@ -291,6 +294,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap.setMyLocationEnabled(true);
         zoomToCurrentLocation();
     }
+
 
     private void clearFirguns() {
         try {

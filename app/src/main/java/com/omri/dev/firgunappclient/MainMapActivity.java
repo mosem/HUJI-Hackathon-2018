@@ -47,6 +47,12 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private boolean buttons_revealed = false;
+
+    public enum FirgunCategory {
+        PEOPLE,
+        ECO,
+        SIGHT
+    }
 //    private Location lastUserLocation;
 
     @Override
@@ -93,21 +99,21 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         fab1.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View view) {
-                createNewFirgunDialog();
+                createNewFirgunDialog(FirgunCategory.PEOPLE);
                                    }
                                });
 
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewFirgunDialog();
+                createNewFirgunDialog(FirgunCategory.ECO);
             }
         });
 
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewFirgunDialog();
+                createNewFirgunDialog(FirgunCategory.SIGHT);
             }
         });
 
@@ -132,7 +138,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     @SuppressWarnings({"MissingPermission"})
-    private void createNewFirgunDialog() {
+    private void createNewFirgunDialog(FirgunCategory category) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter Firgun description");
 

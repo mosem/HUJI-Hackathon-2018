@@ -138,7 +138,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     @SuppressWarnings({"MissingPermission"})
-    private void createNewFirgunDialog(FirgunCategory category) {
+    private void createNewFirgunDialog(final FirgunCategory category) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter Firgun description");
 
@@ -166,12 +166,21 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                                 else {
                                     String userFirgunText = input.getText().toString();
 
-                                    JSONObject jsonObj = new JSONObject();
-
                                     try {
                                         final Location lastLoc = location;
                                         RequestParams params = new RequestParams();
-                                        params.put("category", "eco");
+                                        if (category == FirgunCategory.PEOPLE) {
+                                            params.put("category", "people");
+                                        }
+                                        else if(category == FirgunCategory.ECO) {
+                                            params.put("category", "eco");
+                                        }
+                                        else if(category == FirgunCategory.SIGHT) {
+                                            params.put("category", "sight");
+                                        }
+                                        else {
+                                            params.put("category", "");
+                                        }
                                         params.put("longitude", location.getLongitude());
                                         params.put("latitude", location.getLatitude());
                                         params.put("description", userFirgunText);

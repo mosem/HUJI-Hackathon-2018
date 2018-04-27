@@ -43,4 +43,8 @@
     <include
         layout="@layout/fab_layout" />
 
+    <include
+        layout="@layout/fab_text_layout"
+        />
+
 </RelativeLayout>

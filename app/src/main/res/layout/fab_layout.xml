@@ -4,33 +4,88 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_margin="16dp"-->
+        <!--android:src="@android:drawable/ic_menu_compass"-->
+        <!--android:visibility="invisible"-->
+        <!--app:fabSize="mini" />-->
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_compass"
-        android:visibility="invisible"
-        app:fabSize="mini" />
+        android:elevation="0dp"
+        app:backgroundTint="#80000000"
+        android:src="@drawable/purple_plus"
+
+        app:showAsAction="always"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="14dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="13dp"
+        android:visibility="invisible"/>
+
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_margin="16dp"-->
+        <!--android:src="@android:drawable/ic_menu_myplaces"-->
+        <!--android:visibility="invisible"-->
+        <!--app:fabSize="mini" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_myplaces"
-        android:visibility="invisible"
-        app:fabSize="mini" />
+        android:elevation="0dp"
+        app:backgroundTint="#80000000"
+        android:src="@drawable/red_plus"
+
+        app:showAsAction="always"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="14dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="13dp"
+        android:visibility="invisible"/>
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab3"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_margin="16dp"-->
+        <!--android:src="@android:drawable/ic_menu_share"-->
+        <!--android:visibility="invisible"-->
+        <!--app:fabSize="mini" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_share"
-        android:visibility="invisible"
-        app:fabSize="mini" />
+        android:elevation="0dp"
+        app:backgroundTint="#80000000"
+        android:src="@drawable/green_plus"
+
+        app:showAsAction="always"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="14dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="13dp"
+        android:visibility="invisible"/>
 </FrameLayout>

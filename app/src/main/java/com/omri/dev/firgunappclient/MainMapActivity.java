@@ -48,6 +48,12 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private boolean buttons_revealed = false;
+
+    public enum FirgunCategory {
+        PEOPLE,
+        ECO,
+        SIGHT
+    }
 //    private Location lastUserLocation;
 
     @Override
@@ -94,21 +100,21 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         fab1.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View view) {
-                createNewFirgunDialog();
+                createNewFirgunDialog(FirgunCategory.PEOPLE);
                                    }
                                });
 
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewFirgunDialog();
+                createNewFirgunDialog(FirgunCategory.ECO);
             }
         });
 
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewFirgunDialog();
+                createNewFirgunDialog(FirgunCategory.SIGHT);
             }
         });
 //
@@ -143,7 +149,7 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     @SuppressWarnings({"MissingPermission"})
-    private void createNewFirgunDialog() {
+    private void createNewFirgunDialog(final FirgunCategory category) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter Firgun description");
 
@@ -171,12 +177,21 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                                 else {
                                     String userFirgunText = input.getText().toString();
 
-                                    JSONObject jsonObj = new JSONObject();
-
                                     try {
                                         final Location lastLoc = location;
                                         RequestParams params = new RequestParams();
-                                        params.put("category", "eco");
+                                        if (category == FirgunCategory.PEOPLE) {
+                                            params.put("category", "people");
+                                        }
+                                        else if(category == FirgunCategory.ECO) {
+                                            params.put("category", "eco");
+                                        }
+                                        else if(category == FirgunCategory.SIGHT) {
+                                            params.put("category", "sight");
+                                        }
+                                        else {
+                                            params.put("category", "");
+                                        }
                                         params.put("longitude", location.getLongitude());
                                         params.put("latitude", location.getLatitude());
                                         params.put("description", userFirgunText);

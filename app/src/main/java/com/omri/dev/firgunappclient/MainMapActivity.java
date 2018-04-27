@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+//import android.support.design.widget.ImageView.ImageButton;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -110,6 +111,16 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                 createNewFirgunDialog();
             }
         });
+//
+//        ImageButton btn=(ImageButton)findViewById(R.id.widget45);
+//        btn.setOnClickListener(new OnClickListener() {
+//
+//            public void onClick(View v) {
+//                Intent inf=new Intent(TestbuttontestActivity.this,Activityfullscreen.class);
+//
+//                startActivity(inf);
+//            }
+//        });
 
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -287,11 +298,26 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                             String description = currObject.getString("description");
                             double latitude = currObject.getDouble("latitude");
                             double longitude = currObject.getDouble("longitude");
+                            String category = currObject.getString("category");
+                            if(category.equals("eco")){
+                                mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(latitude, longitude))
+                                .title(description)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.green_firgun)));
+                            }
+                            else if(category.equals("people")){
+                                mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(latitude, longitude))
+                                .title(description)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.red_firgun)));
+                            }
+                            else{
+                                mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(latitude, longitude))
+                                .title(description)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.purple_firgun)));
+                            }
 
-                            mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(latitude, longitude))
-                            .title(description)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                         }
                     }
                     catch (Exception e) {

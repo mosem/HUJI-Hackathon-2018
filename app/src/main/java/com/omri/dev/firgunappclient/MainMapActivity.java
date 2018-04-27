@@ -99,21 +99,21 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
         fab1.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View view) {
-                createNewFirgunDialog(FirgunCategory.PEOPLE);
+                createNewFirgunDialog(FirgunCategory.SIGHT);
                                    }
                                });
 
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewFirgunDialog(FirgunCategory.ECO);
+                createNewFirgunDialog(FirgunCategory.PEOPLE);
             }
         });
 
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewFirgunDialog(FirgunCategory.SIGHT);
+                createNewFirgunDialog(FirgunCategory.ECO);
             }
         });
 
@@ -303,10 +303,27 @@ public class MainMapActivity extends FragmentActivity implements OnMapReadyCallb
                             double latitude = currObject.getDouble("latitude");
                             double longitude = currObject.getDouble("longitude");
 
-                            mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(latitude, longitude))
-                            .title(description)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                            String category = currObject.getString("category");
+                            if(category.equals("eco")){
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng(latitude, longitude))
+                                        .title(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.green_firgun)));
+                            }
+                            else if(category.equals("people")){
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng(latitude, longitude))
+                                        .title(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.red_firgun)));
+                            }
+                            else{
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng(latitude, longitude))
+                                        .title(description)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.purple_firgun)));
+                            }
+
+
                         }
                     }
                     catch (Exception e) {
